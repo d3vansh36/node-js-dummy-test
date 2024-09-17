@@ -15,7 +15,7 @@ pipeline {
         stage('Building Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', registryCredential) {
+                    docker {  // Import the docker object
                         def dockerImage = docker.build("${registry}")
                     }
                 }
@@ -32,7 +32,7 @@ pipeline {
         stage('Deploying Image') {
             steps {
                 script {
-                    docker.withRegistry('', registryCredential) {
+                    docker {  // Import the docker object
                         dockerImage.push()
                     }
                 }
