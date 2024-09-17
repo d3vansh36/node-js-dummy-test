@@ -14,8 +14,10 @@ pipeline {
         }
         stage('Building Docker Image') {
             steps {
-                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                    def dockerImage = docker.build("${registry}")
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        def dockerImage = docker.build("${registry}")
+                    }
                 }
             }
         }
@@ -29,9 +31,11 @@ pipeline {
         }
         stage('Deploying Image') {
             steps {
-                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                    def dockerImage = docker.image("${registry}")
-                    dockerImage.push()
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        def dockerImage = docker.image("${registry}")
+                        dockerImage.push()
+                    }
                 }
             }
         }
