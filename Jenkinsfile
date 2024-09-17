@@ -14,10 +14,8 @@ pipeline {
         }
         stage('Building Docker Image') {
             steps {
-                script {
-                    docker {  // Import the docker object
-                        def dockerImage = docker.build("${registry}")
-                    }
+                dockerNode {  // Use dockerNode instead of docker
+                    def dockerImage = docker.build("${registry}")
                 }
             }
         }
@@ -31,10 +29,8 @@ pipeline {
         }
         stage('Deploying Image') {
             steps {
-                script {
-                    docker {  // Import the docker object
-                        dockerImage.push()
-                    }
+                dockerNode {  // Use dockerNode instead of docker
+                    dockerImage.push()
                 }
             }
         }
