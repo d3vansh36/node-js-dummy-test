@@ -4,7 +4,6 @@ pipeline {
     environment {
         registry = "sc0rpion/my-node-app"
         registryCredential = 'dockerhub'
-        dockerImage = ''
     }
 
     stages {
@@ -16,7 +15,9 @@ pipeline {
         stage('Building Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build registry
+                    docker.withRegistry('', registryCredential) {
+                        def dockerImage = docker.build("${registry}")
+                    }
                 }
             }
         }
@@ -24,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Example using Trivy for security scan
-                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${registry}'
+                    sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${registry}"
                 }
             }
         }
