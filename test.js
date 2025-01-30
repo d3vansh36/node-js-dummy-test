@@ -1,1 +1,4 @@
-parent.eval('alert("XSS executed from iframe!")');
+// my-script.js
+console.log("Script executed!");
+alert("Hello from the fetched script!");
+
